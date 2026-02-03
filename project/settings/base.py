@@ -30,7 +30,12 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    "user"
+    "user",
+    "teacher",
+    "subject",
+    "batch",
+    "enrollment",
+    "payment"
 ]
 
 # Application definition
