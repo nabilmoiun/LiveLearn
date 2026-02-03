@@ -33,9 +33,9 @@ LOCAL_APPS = [
     "user",
     "teacher",
     "subject",
-    "batch",
     "enrollment",
-    "payment"
+    "payment",
+    "common"
 ]
 
 # Application definition
