@@ -1,5 +1,6 @@
 Online Tution Platform
 =
+A online platform where students admit into batch and take classes online provided by teachers.
 
 ```
 SECRET_KEY=your-strong-secret-key
