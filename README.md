@@ -1,3 +1,6 @@
+Online Tution Platform
+=
+
 ```
 SECRET_KEY=your-strong-secret-key
 DEBUG=True
