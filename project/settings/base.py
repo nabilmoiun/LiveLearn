@@ -26,7 +26,8 @@ DJANGO_APPS = [
 
 THIRD_PARTY_APPS = [
     "rest_framework",
-    "corsheaders"
+    "corsheaders",
+    "drf_spectacular"
 ]
 
 LOCAL_APPS = [
@@ -111,4 +112,8 @@ STATICFILES_DIRS = [BASE_DIR / 'static', ]
 STATIC_ROOT = BASE_DIR / 'staticfiles'
 
 AUTH_USER_MODEL = "user.User"
+
+REST_FRAMEWORK = {
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
+}
 
