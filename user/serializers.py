@@ -8,17 +8,17 @@ User = get_user_model()
 
 class UserCreateSerializer(serializers.ModelSerializer):
     email = serializers.EmailField()
-
+    password = serializers.CharField(write_only=True)
+    
     class Meta:
         model = get_user_model()
         fields = (
-            "id",
             "full_name",
             "email",
             "role",
             "password",
         )
-        read_only_fields = ("id", )
+        read_only_fields = ("role", )
 
     def validate(self, attrs):
         email = attrs['email']
@@ -27,17 +27,6 @@ class UserCreateSerializer(serializers.ModelSerializer):
                 "email": ["User with the email already exists"]
             })
         return attrs
-
-    def create(self, validated_data):
-        email = validated_data.pop("email")
-        password = validated_data.pop("password")
-        instance, _ = User.objects.update_or_create(
-            email=email,
-            defaults={**validated_data}
-        )
-        instance.set_password(password)
-        instance.save()
-        return instance
 
 
 class BaseUserViewSerializer(serializers.ModelSerializer):
