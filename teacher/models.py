@@ -7,7 +7,10 @@ from common.models import BaseModel
 
 
 class Teacher(BaseModel):
-    user = models.OneToOneField(settings.AUTH_USER_MODEL, related_name='teacher_profile', on_delete=models.PROTECT)
+    user = models.OneToOneField(
+        settings.AUTH_USER_MODEL, related_name='teacher_profile',
+        on_delete=models.PROTECT, db_index=True
+    )
 
     class Meta:
         db_table = "teachers"
@@ -19,13 +22,6 @@ class Teacher(BaseModel):
         return self.user.full_name
 
 
-class Certificate(BaseModel):
-    attachment = models.FileField(upload_to="teacher_attachments")
-
-    def __str__(self):
-        return self.attachment.url
-
-
 class Academic(BaseModel):
     teacher = models.ForeignKey(Teacher, related_name='academics', on_delete=models.CASCADE)
     institution = models.CharField(max_length=250)
@@ -33,8 +29,7 @@ class Academic(BaseModel):
     major = models.CharField(max_length=250)
     grade = models.FloatField()
     grade_margin = models.FloatField()
-    passing_year = models.IntegerField(null=True, blank=True)
-    cartificate = models.ForeignKey(Certificate, on_delete=models.PROTECT)
+    passing_year = models.IntegerField()
 
     class Meta:
         db_table = "academics"
@@ -69,14 +64,16 @@ class ProfessionalExperience(BaseModel):
         db_table = "professional_experiences"
         verbose_name = "Professional Experience"
         verbose_name_plural = "Professional Experiences"
-        ordering = ['-created_at']
 
     def __str__(self):
         return self.teacher.user.full_name
 
 
 class Batch(BaseModel):
-    teacher = models.ForeignKey(settings.AUTH_USER_MODEL, related_name='batches', on_delete=models.CASCADE)
+    teacher = models.ForeignKey(
+        settings.AUTH_USER_MODEL, related_name='batches',
+        on_delete=models.CASCADE, db_index=True
+    )
     subject = models.ForeignKey(Subject, related_name='batches', on_delete=models.PROTECT)
     name = models.CharField(max_length=250)
     from_time = models.TimeField()
@@ -84,6 +81,10 @@ class Batch(BaseModel):
     notes = models.TextField(help_text="Describe what you teach in shortly such topics so that student can understand")
     monthly_fee = models.DecimalField(max_digits=12, decimal_places=2)
     admission_fee = models.DecimalField(max_digits=12, decimal_places=2)
+    active = models.BooleanField(default=True)
+    total_seats = models.IntegerField(default=100)
+    class_link = models.URLField()
+    students = models.ManyToManyField(settings.AUTH_USER_MODEL, blank=True)
 
     class Meta:
         ordering = ['name']

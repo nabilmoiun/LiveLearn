@@ -1,7 +1,7 @@
 from django.contrib import admin
 
 from .models import (
-    Teacher, Certificate, Academic,
+    Teacher, Academic,
     ExtraInformation, ProfessionalExperience, Batch
 )
 
@@ -16,7 +16,6 @@ class AcademicAdmin(admin.ModelAdmin):
     list_display = ["__str__"]
 
 
-admin.site.register(Certificate)
 admin.site.register(ExtraInformation)
 admin.site.register(ProfessionalExperience)
 admin.site.register(Batch)

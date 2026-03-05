@@ -1,3 +1,4 @@
+from django.db import transaction
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
 
@@ -7,6 +8,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework import viewsets, permissions, mixins, status
 
+from teacher.models import Teacher
 from .serializers import (
     UserCreateSerializer,
     BaseUserViewSerializer
@@ -37,9 +39,9 @@ class AuthViewSet(viewsets.GenericViewSet):
         detail=False,
         methods=["post"],
         serializer_class=UserCreateSerializer,
-        url_path="register"
+        url_path="user-registration"
     )
-    def register(self, *args, **kwargs):
+    def register_user(self, *args, **kwargs):
         serializer = self.get_serializer(data=self.request.data)
         serializer.is_valid(raise_exception=True)
         instance, _ = User.objects.update_or_create(
@@ -49,5 +51,27 @@ class AuthViewSet(viewsets.GenericViewSet):
                 "password": make_password(serializer.validated_data['password'])
             }
         )
+        return Response(BaseUserViewSerializer(instance).data, status=status.HTTP_201_CREATED)
+
+    @extend_schema(responses={201: BaseUserViewSerializer})
+    @action(
+        detail=False,
+        methods=["post"],
+        serializer_class=UserCreateSerializer,
+        url_path="teacher-registration"
+    )
+    @transaction.atomic
+    def register_teacher(self, *args, **kwargs):
+        serializer = self.get_serializer(data=self.request.data)
+        serializer.is_valid(raise_exception=True)
+        instance, _ = User.objects.update_or_create(
+            email=serializer.validated_data['email'],
+            defaults={
+                "full_name": serializer.validated_data['full_name'],
+                "role": "teacher",
+                "password": make_password(serializer.validated_data['password'])
+            }
+        )
+        Teacher.objects.create(user=instance)
         return Response(BaseUserViewSerializer(instance).data, status=status.HTTP_201_CREATED)
     

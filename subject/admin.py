@@ -5,4 +5,4 @@ from .models import Subject
 
 @admin.register(Subject)
 class SubjectAdmin(admin.ModelAdmin):
-    list_display = ["__str__", "slug", ]
+    list_display = ["__str__", "slug", "id", ]
