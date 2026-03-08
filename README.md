@@ -1,6 +1,6 @@
 Online Tution Platform
 =
-A online platform where students admit into batch and take classes online provided by teachers.
+A online platform where students admit into batch and take classes online provided by teachers. A platform turning physical tution to virtual.
 
 ```
 SECRET_KEY=your-strong-secret-key
@@ -22,4 +22,3 @@ Jate se automatic oi class a join korte parbe
 
 kono user jodi taka na dey tahole take just ai class er participants theke ber kore dibe teacher
 kintu se enrollment a active thakbe se jodi sob taka dai tahole teacher abar take ai class a allow korbe
-
